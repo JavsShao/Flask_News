@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
-# from itsdangerous import signer,BadSignature,want_bytes
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+
 
 app = Flask(__name__)
 
@@ -33,6 +35,10 @@ db = SQLAlchemy(app)
 redis_store = redis.StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
 CSRFProtect(app)
 Session(app)
+
+manager = Manager(app)
+Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 @app.route('/index')
 def index():
