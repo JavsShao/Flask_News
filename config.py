@@ -1,4 +1,5 @@
 import redis
+import logging
 
 
 class Config(object):
@@ -21,16 +22,29 @@ class Config(object):
     SESSION_REDIS = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)  # 使用 redis 的实例
     PERMANENT_SESSION_LIFETIME = 86400  # session 的有效期，单位是秒
 
+    # 默认日志等级
+    LOG_LEVEL = logging.DEBUG
+
 class DevelopmentConfig(Config):
     """开发模式下的配置"""
-    DEBUG = True
+    # 开发环境日志等级
+    LEVEL_LOG = logging.DEBUG
 
 class ProductionConfig(Config):
     """生产模式下的配置"""
-    pass
+    DEBUG = False
+    LOG_LEVEL = logging.ERROR
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:970202@127.0.0.1:3306/Flask_News'
+    # 生产环境日志等级
 
-# 定义配置字典
+class UnittestConfig(Config):
+    """测试环境"""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:970202@127.0.0.1:3306/Flask_News'
+
+# 定义配置字典,存储关键字对应的不同的配置类的类名
 config = {
-    "development":DevelopmentConfig,
-    "production":ProductionConfig
+    "dev":DevelopmentConfig,
+    "pro":ProductionConfig,
+    "unit":UnittestConfig
 }
