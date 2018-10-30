@@ -38,11 +38,14 @@ def create_app(config_name):
     app.config.from_object(Config)
     # 配置数据库
     db.init_app(app)
+
     # 配置redis
     global redis_store
     redis_store = redis.StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT)
+
     # 开启csrf保护
     CSRFProtect(app)
+
     # 设置session保存位置
     Session(app)
 
