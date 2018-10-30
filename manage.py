@@ -8,13 +8,11 @@ app = create_app('dev')
 
 # 创建脚本管理器对象
 manager = Manager(app)
+
+# 数据库迁移
 Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
-
-@app.route('/index')
-def index():
-    return 'index'
 
 if __name__ == '__main__':
     app.run()
