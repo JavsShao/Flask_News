@@ -8,6 +8,7 @@ from flask_migrate import Migrate, MigrateCommand
 
 from config import Config
 
+
 app = Flask(__name__)
 
 
