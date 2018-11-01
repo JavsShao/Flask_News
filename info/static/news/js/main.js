@@ -61,8 +61,8 @@ $(function(){
 	// 打开注册框
 	$('.register_btn').click(function(){
 		$('.register_form_con').show();
-		generateImageCode()
-	})
+		generateImageCode();
+	});
 
 
 	// 登录框和注册框切换
@@ -82,7 +82,7 @@ $(function(){
 	var sHash = window.location.hash;
 	if(sHash!=''){
 		var sId = sHash.substring(1);
-		var oNow = $('.'+sId);		
+		var oNow = $('.'+sId);
 		var iNowIndex = oNow.index();
 		$('.option_list li').eq(iNowIndex).addClass('active').siblings().removeClass('active');
 		oNow.show().siblings().hide();
@@ -158,11 +158,17 @@ $(function(){
     })
 })
 
-var imageCodeId = ""
+// uuid
+var imageCodeId = "";
 
 // TODO 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
 function generateImageCode() {
-
+    // 生成uuid
+    imageCodeId = generateUUID();
+    // url:必须要能访问到image_code视图
+    var url = '/passport/image_code?imageCodeId='+imageCodeId;
+    // 将url赋值给img标签的src属性,只要src属性给赋值一个url，会立即向该url发送请求
+    $('.get_pic_code').attr('src', url);
 }
 
 // 发送短信验证码
@@ -184,7 +190,27 @@ function sendSMSCode() {
         return;
     }
 
+    var params = {
+        'mobile':mobile,
+        'image_code':imageCode,
+        'image_code_id':imageCodeId
+    };
+
     // TODO 发送短信验证码
+    $.ajax({
+        url:'/passport/sms_code',   // 请求地址
+        type:'post',                // 请求方法
+        data:JSON.stringify(params),// 请求参数
+        contentType:'application/json',// 数据类型
+        success:function (response) {  // 回调函数
+            if (response.errno == '0') {
+                // 发送短信验证码成功
+                alert(response.errmsg);
+            } else {
+                alert(response.errmsg);
+            }
+        }
+    });
 }
 
 // 调用该函数模拟点击左侧按钮

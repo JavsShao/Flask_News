@@ -43,7 +43,7 @@ class UnittestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql://root:970202@127.0.0.1:3306/Flask_News'
 
 # 定义配置字典,存储关键字对应的不同的配置类的类名
-config = {
+configs = {
     "dev":DevelopmentConfig,
     "pro":ProductionConfig,
     "unit":UnittestConfig

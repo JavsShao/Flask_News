@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
-from config import Config
+# from config import Config
+from config import configs
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -30,27 +31,32 @@ def create_app(config_name):
     '''通过传入不同的配置名字，初始化其对应配置的应用实例'''
 
     # 根据创建app时的配置环境，加载日志等级
-    setup_log(Config.LOG_LEVEL)
+    setup_log(configs[config_name].LOG_LEVEL)
 
     app = Flask(__name__)
 
     # 配置
-    app.config.from_object(Config)
+    app.config.from_object(configs[config_name])
     # 配置数据库
     db.init_app(app)
 
     # 配置redis
     global redis_store
-    redis_store = redis.StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT)
+    redis_store = redis.StrictRedis(host=configs[config_name].REDIS_HOST, port=configs[config_name].REDIS_PORT)
 
     # 开启csrf保护
-    CSRFProtect(app)
+    # CSRFProtect(app)
 
     # 设置session保存位置
     Session(app)
 
-    # 注册蓝图
+    # 注册蓝图:index_blue
     from info.modules.index import index_blue
     app.register_blueprint(index_blue)
+
+    # 注册蓝图：passport_blue
+    from info.modules.passport import passport_blue
+    app.register_blueprint(passport_blue)
+
 
     return app
