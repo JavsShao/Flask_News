@@ -143,60 +143,57 @@ $(function(){
     });
 
 
-    // TODO 注册按钮点击
-    $(".register_form_con").submit(function (e) {
-        // 阻止默认提交操作
-        e.preventDefault();
+// 注册表单提交
+$(".register_form_con").submit(function (e) {
+    e.preventDefault()
 
-		// 取到用户输入的内容
-        var mobile = $("#register_mobile").val()
-        var smscode = $("#smscode").val()
-        var password = $("#register_password").val()
+    // 取到用户输入的内容
+    var mobile = $("#register_mobile").val()
+    var smscode = $("#smscode").val()
+    var password = $("#register_password").val()
 
-		if (!mobile) {
-            $("#register-mobile-err").show();
-            return;
-        }
-        if (!smscode) {
-            $("#register-sms-code-err").show();
-            return;
-        }
-        if (!password) {
-            $("#register-password-err").html("请填写密码!");
-            $("#register-password-err").show();
-            return;
-        }
+    if (!mobile) {
+        $("#register-mobile-err").show();
+        return;
+    }
+    if (!smscode) {
+        $("#register-sms-code-err").show();
+        return;
+    }
+    if (!password) {
+        $("#register-password-err").html("请填写密码!");
+        $("#register-password-err").show();
+        return;
+    }
 
-		if (password.length < 6) {
-            $("#register-password-err").html("密码长度不能少于6位");
-            $("#register-password-err").show();
-            return;
-        }
+    if (password.length < 6) {
+        $("#register-password-err").html("密码长度不能少于6位");
+        $("#register-password-err").show();
+        return;
+    }
 
-        // 发起注册请求
-        var params = {
-            'mobile':mobile,
-            'smscode':smscode,
-            'password':password
-        };
+    var params = {
+        "mobile": mobile,
+        "smscode": smscode,
+        "password": password,
+    }
 
-        $.ajax({
-            url:'/passport/register', // 请求地址
-            type:'post', // 请求方法
-            data:JSON.stringify(params), // 请求参数
-            contentType:'application/json',
-            headers:{'X-CSRFToken':getCookie('csrf_token')}, // 在请求头中带上csrf_token
-            success:function (response) {
-                if (response.errno == '0') {
-                    // 注册成功
-                    location.reload();
-                } else {
-                    alert(response.errmsg);
-                }
+    $.ajax({
+        url:"/passport/register",
+        type: "post",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        success: function (resp) {
+            if (resp.errno == "0"){
+                // 刷新当前界面
+                location.reload()
+            }else {
+                $("#register-password-err").html(resp.errmsg)
+                $("#register-password-err").show()
             }
-        });
+        }
     })
-});
+})
 
 
 // 退出登录
