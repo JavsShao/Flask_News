@@ -3,13 +3,15 @@
 from info.libs.yuntongxun.CCPRestSDK import REST
 
 # 说明：主账号，登陆云通讯网站后，可在"控制台-应用"中看到开发者主账号ACCOUNT SID
-_accountSid = '8a216da863b5b9c20163cd8af4630a6d'
-
-# 说明：主账号Token，登陆云通讯网站后，可在控制台-应用中看到开发者主账号AUTH TOKEN
-_accountToken = '30806252045e429aa638b72c8ef0c154'
-
-# 请使用管理控制台首页的APPID或自己创建应用的APPID
-_appId = '8a216da863b5b9c20163cd8af4b80a73'
+# _accountSid = '8a216da863b5b9c20163cd8af4630a6d'
+# _accountSid = '8a216da863b5b9c20163cd8af4630a6d'
+#
+# # 说明：主账号Token，登陆云通讯网站后，可在控制台-应用中看到开发者主账号AUTH TOKEN
+# # _accountToken = '30806252045e429aa638b72c8ef0c154'
+# _accountToken = '536622ff175a4bb6891f3255d4d2c8dc'
+#
+# # 请使用管理控制台首页的APPID或自己创建应用的APPID
+# _appId = '8a216da863b5b9c20163cd8af4b80a73'
 
 # 说明：请求地址，生产环境配置成app.cloopen.com
 _serverIP = 'sandboxapp.cloopen.com'
@@ -26,20 +28,20 @@ _softVersion = '2013-12-26'
 # @param datas 内容数据 格式为数组 例如：{'12','34'}，如不需替换请填 ''
 # @param $tempId 模板Id
 
-def sendTemplateSMS(to, datas, tempId):
-    # 初始化REST SDK
-    rest = REST(serverIP, serverPort, softVersion)
-    rest.setAccount(accountSid, accountToken)
-    rest.setAppId(appId)
-
-    result = rest.sendTemplateSMS(to, datas, tempId)
-    for k, v in result.iteritems():
-
-        if k == 'templateSMS':
-            for k, s in v.iteritems():
-                print('%s:%s' % (k, s))
-        else:
-            print('%s:%s' % (k, s))
+# def sendTemplateSMS(to, datas, tempId):
+#     # 初始化REST SDK
+#     rest = REST(serverIP, serverPort, softVersion)
+#     rest.setAccount(accountSid, accountToken)
+#     rest.setAppId(appId)
+#
+#     result = rest.sendTemplateSMS(to, datas, tempId)
+#     for k, v in result.iteritems():
+#
+#         if k == 'templateSMS':
+#             for k, s in v.iteritems():
+#                 print('%s:%s' % (k, s))
+#         else:
+#             print('%s:%s' % (k, s))
 
 
 class CCP(object):
